@@ -21,7 +21,7 @@ public class ItemAPI {
     // slot:id:damage:count:CompoundTag(base64)
 
     public static String toString(int slot, Item item) {
-        return slot + ":" + item.getId() + ":" + item.getDamage() + ":" +
+        return slot + ":" + item.getId() + ":" + item.getDamage() + ":" + item.getCount() + ":" +
                 (item.hasCompoundTag() ? bytesToBase64(item.getCompoundTag()) : "not");
     }
 
