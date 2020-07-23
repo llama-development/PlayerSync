@@ -2,8 +2,6 @@ package net.llamadevelopment.PlayerSync.utils;
 
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.enchantment.Enchantment;
-import com.j256.ormlite.stmt.query.In;
 
 import java.util.Base64;
 
