@@ -40,8 +40,11 @@ public class ItemAPI {
         int slot = Integer.parseInt(info[0]);
         Item item = Item.get(Integer.parseInt(info[1]),
                 Integer.parseInt(info[2]),
-                Integer.parseInt(info[3]),
-                base64ToBytes(info[4]));
+                Integer.parseInt(info[3]));
+        if (!info[4].equals("not")) {
+            item.setCompoundTag(base64ToBytes(info[4]));
+
+        }
         return new ItemWithSlot(slot, item);
     }
 
