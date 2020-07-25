@@ -1,3 +1,6 @@
+# prefix
+prefix: "§c[PSYNC] "
+
 # message config
-loadingData: "§c[PSYNC] §eLoading your data... please wait."
-loadingDone: "§c[PSYNC] §aSuccessfully loaded your data."
+loadingData: "§eLoading your data... please wait."
+loadingDone: "§aSuccessfully loaded your data."

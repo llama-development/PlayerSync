@@ -9,9 +9,7 @@ public class ItemAPI {
 
     public static String invToString(Inventory inventory) {
         StringBuilder stringInv = new StringBuilder();
-            inventory.getContents().forEach(((integer, item) -> {
-                stringInv.append(toString(integer, item)).append("/");
-            }));
+        inventory.getContents().forEach(((integer, item) -> stringInv.append(toString(integer, item)).append("/")));
         return stringInv.toString().substring(0, stringInv.toString().length() - 1);
     }
 
@@ -24,9 +22,7 @@ public class ItemAPI {
     }
 
     public static String bytesToBase64(byte[] src) {
-        if (src == null || src.length <= 0) {
-            return "not";
-        }
+        if (src == null || src.length <= 0) return "not";
         return Base64.getEncoder().encodeToString(src);
     }
 
@@ -36,20 +32,17 @@ public class ItemAPI {
     public static ItemWithSlot fromString(String itemString) throws NumberFormatException {
         String[] info = itemString.split(":");
         int slot = Integer.parseInt(info[0]);
-        Item item = Item.get(Integer.parseInt(info[1]),
+        Item item = Item.get(
+                Integer.parseInt(info[1]),
                 Integer.parseInt(info[2]),
-                Integer.parseInt(info[3]));
-        if (!info[4].equals("not")) {
-            item.setCompoundTag(base64ToBytes(info[4]));
-
-        }
+                Integer.parseInt(info[3])
+        );
+        if (!info[4].equals("not")) item.setCompoundTag(base64ToBytes(info[4]));
         return new ItemWithSlot(slot, item);
     }
 
     public static byte[] base64ToBytes(String hexString) {
-        if (hexString == null || hexString.equals("")) {
-            return null;
-        }
+        if (hexString == null || hexString.equals("")) return null;
         return Base64.getDecoder().decode(hexString);
     }
 

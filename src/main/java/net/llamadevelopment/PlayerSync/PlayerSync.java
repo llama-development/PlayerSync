@@ -2,18 +2,13 @@ package net.llamadevelopment.PlayerSync;
 
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
 import net.llamadevelopment.PlayerSync.listener.PlayerListener;
 import net.llamadevelopment.PlayerSync.provider.MongoProvider;
 import net.llamadevelopment.PlayerSync.provider.MySQLProvider;
 import net.llamadevelopment.PlayerSync.provider.Provider;
 import net.llamadevelopment.PlayerSync.utils.Language;
 import net.llamadevelopment.PlayerSync.utils.Manager;
-import org.bson.Document;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -21,9 +16,9 @@ import java.util.Map;
 
 public class PlayerSync extends PluginBase {
 
-    private static int configVersion = 2;
+    private final static int configVersion = 2;
 
-    public static PlayerSync instance;
+    private static PlayerSync instance;
     public static Provider provider;
     public static Map<String, Provider> providers = new HashMap<>();
     public static boolean sounds;
@@ -100,7 +95,7 @@ public class PlayerSync extends PluginBase {
                 saveDefaultConfig();
                 reloadConfig();
                 Config newConf = getConfig();
-                c.getAll().forEach((string, object) -> newConf.set(string, object));
+                c.getAll().forEach(newConf::set);
                 newConf.save();
                 System.out.println("The config has been updated to version " + configVersion + ".");
             } catch (Exception ignored) { }

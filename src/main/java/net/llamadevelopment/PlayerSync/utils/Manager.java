@@ -40,61 +40,57 @@ public class Manager {
         if (!loaded.contains(player.getName())) return;
         String inv = "empty";
         String ec = "empty";
-        if (enderchest && player.getEnderChestInventory().getContents().size() > 0) {
-            ec = ItemAPI.invToString(player.getEnderChestInventory());
-        }
-        if (inventory && player.getInventory().getContents().size() > 0) {
-            inv = ItemAPI.invToString(player.getInventory());
-        }
+        if (enderchest && player.getEnderChestInventory().getContents().size() > 0) ec = ItemAPI.invToString(player.getEnderChestInventory());
+        if (inventory && player.getInventory().getContents().size() > 0) inv = ItemAPI.invToString(player.getInventory());
+
         PlayerSync.provider.savePlayer(getUserID(player), inv, ec, player.getHealth() + "", player.getFoodData().getLevel(), player.getExperienceLevel(), player.getExperience());
     }
 
     public static void loadPlayer(Player player) {
-
-        playSound(player, Sound.RANDOM_ORB);
-
         loaded.remove(player.getName());
-        SyncPlayer syncPlayer = PlayerSync.provider.getPlayer(player);
 
         player.getInventory().clearAll();
         player.getEnderChestInventory().clearAll();
         player.setExperience(0, 0);
 
-        player.sendMessage(Language.getMessage("loadingData"));
+        player.sendMessage(Language.get("loadingData"));
+        playSound(player, Sound.RANDOM_ORB);
 
-        PlayerSync.instance.getServer().getScheduler().scheduleDelayedTask(PlayerSync.instance, () -> {
-            if (inventory) {
-                String inv = syncPlayer.invString;
-                if (!inv.equalsIgnoreCase("empty")) {
-                    String[] itemStrings = inv.split("/");
-                    HashMap<Integer, Item> loadedInv = new HashMap<>();
-                    for (String str : itemStrings) {
-                        ItemWithSlot its = ItemAPI.fromString(str);
-                        loadedInv.put(its.slot, its.item);
+        PlayerSync.getInstance().getServer().getScheduler().scheduleDelayedTask(PlayerSync.getInstance(), () -> {
+            PlayerSync.provider.getPlayer(player, (syncPlayer -> {
+                if (inventory) {
+                    String inv = syncPlayer.invString;
+                    if (!inv.equalsIgnoreCase("empty")) {
+                        String[] itemStrings = inv.split("/");
+                        HashMap<Integer, Item> loadedInv = new HashMap<>();
+                        for (String str : itemStrings) {
+                            ItemWithSlot its = ItemAPI.fromString(str);
+                            loadedInv.put(its.slot, its.item);
+                        }
+                        player.getInventory().setContents(loadedInv);
                     }
-                    player.getInventory().setContents(loadedInv);
                 }
-            }
-            if (enderchest) {
-                String ecInv = syncPlayer.ecString;
-                if (!ecInv.equals("empty")) {
-                    String[] ecitemStrings = ecInv.split("/");
-                    HashMap<Integer, Item> loadedEcInv = new HashMap<>();
-                    for (String str : ecitemStrings) {
-                        ItemWithSlot its = ItemAPI.fromString(str);
-                        loadedEcInv.put(its.slot, its.item);
+                if (enderchest) {
+                    String ecInv = syncPlayer.ecString;
+                    if (!ecInv.equals("empty")) {
+                        String[] ecitemStrings = ecInv.split("/");
+                        HashMap<Integer, Item> loadedEcInv = new HashMap<>();
+                        for (String str : ecitemStrings) {
+                            ItemWithSlot its = ItemAPI.fromString(str);
+                            loadedEcInv.put(its.slot, its.item);
+                        }
+                        player.getEnderChestInventory().setContents(loadedEcInv);
                     }
-                    player.getEnderChestInventory().setContents(loadedEcInv);
                 }
-            }
 
-            if (health) player.setHealth(syncPlayer.health);
-            if (food) player.getFoodData().setLevel(syncPlayer.food);
-            if (exp) player.setExperience(syncPlayer.exp, syncPlayer.level);
+                if (health) player.setHealth(syncPlayer.health);
+                if (food) player.getFoodData().setLevel(syncPlayer.food);
+                if (exp) player.setExperience(syncPlayer.exp, syncPlayer.level);
 
-            loaded.add(player.getName());
-            player.sendMessage(Language.getMessage("loadingDone"));
-            playSound(player, Sound.RANDOM_LEVELUP);
+                loaded.add(player.getName());
+                player.sendMessage(Language.get("loadingDone"));
+                playSound(player, Sound.RANDOM_LEVELUP);
+            }));
         }, Manager.loadDelay);
     }
 
