@@ -56,7 +56,7 @@ public class PlayerSync extends PluginBase {
                     System.out.println(idMethod + " is not a valid id-method.");
                     return;
             }
-            String prov = c.getString("provider");
+            String prov = c.getString("provider").toLowerCase();
             if (prov.equalsIgnoreCase("ENTER_PROVIDER")) {
                 getLogger().info("§a-+-+-+ PlayerSync +-+-+-");
                 getLogger().info("§aThanks for downloading PlayerSync! Please choose your provider and fill out the required information in the config.yml file.");
