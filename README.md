@@ -12,8 +12,6 @@ Get your own **Server** today here: [Click me](https://zap-hosting.com/lldv)
 ### Special offer
 Use the code `proxma-20` for a 20% discount
 ***
-
-
 ![YourKit](https://www.yourkit.com/images/yklogo.png)
 ------
 YourKit supports open source projects with innovative and intelligent tools
